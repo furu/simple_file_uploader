@@ -51,8 +51,8 @@ post '/files' do
 end
 
 get '/files/:id' do
-  # @todo
-  # - ファイルが存在しない場合 404 を返すようにする
+
+  halt 404, 'file not found' unless File.exist?(File.join(settings.uploaded_path, params[:id]))
 
   @file = {
     name: params[:id],
@@ -63,8 +63,8 @@ get '/files/:id' do
 end
 
 get '/files/:id/content' do
-  # @todo
-  # - ファイルが存在しない場合 404 を返す
+
+  halt 404, 'file not found' unless File.exist?(File.join(settings.uploaded_path, params[:id]))
 
   send_file File.join(settings.uploaded_path, params[:id]), disposition: :attachment
 end
@@ -72,7 +72,8 @@ end
 delete '/files/:id' do
   # @todo
   # - 削除に失敗した場合の例外処理
-  # - ファイルが存在しない場合 404 を返すようにする
+
+  halt 404, 'file not found' unless File.exist?(File.join(settings.uploaded_path, params[:id]))
 
   File.delete(File.join(settings.uploaded_path, params[:id]))
 
