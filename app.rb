@@ -42,7 +42,7 @@ post '/files' do
   # - バリデーション
 
   data = params[:uploaded_file][:tempfile].read
-  filename = Digest::MD5.hexdigest(data)
+  filename = Digest::MD5.hexdigest(data + Time.now.to_s)
   ext = File.extname(params[:uploaded_file][:filename])
   path = File.join(settings.uploaded_path, "#{filename}#{ext}")
   open(path, 'w') { |io| io.write(data) }
