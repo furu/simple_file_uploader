@@ -1,0 +1,15 @@
+h1 = @file[:name]
+
+p
+  a href="/files/#{@file[:name]}/content"
+    | download
+
+form action="/files/#{@file[:name]}" method="post"
+  input type="hidden" name="_method" value="delete"
+  input type="submit" value="delete"
+
+object data="#{@file[:path]}"
+
+p
+  a href="/"
+    | Back
