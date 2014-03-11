@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'slim'
+gem 'rack-flash3'
 
 group :development do
   gem 'pry'
