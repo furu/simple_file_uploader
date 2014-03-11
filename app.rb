@@ -3,6 +3,7 @@ require 'bundler/setup'
 require 'sinatra'
 require 'slim'
 require 'digest/md5'
+require 'rack-flash'
 
 configure :development do
   require 'sinatra/reloader'
@@ -11,6 +12,11 @@ end
 
 configure do
   set :uploaded_path, File.join(settings.public_folder, 'uploaded_files')
+
+  enable :sessions
+  # @see http://stackoverflow.com/questions/18044627/sinatra-1-4-3-use-racksessioncookie-warning
+  set :session_secret, '*&(^B234'
+  use Rack::Flash
 end
 
 get '/' do
@@ -31,7 +37,7 @@ get '/' do
 end
 
 post '/files' do
-  # TODO
+  # @todo
   # - ファイルの保存に失敗した場合の例外処理
   # - バリデーション
 
@@ -45,7 +51,7 @@ post '/files' do
 end
 
 get '/files/:id' do
-  # TODO
+  # @todo
   # - ファイルが存在しない場合 404 を返すようにする
 
   @file = {
@@ -57,19 +63,20 @@ get '/files/:id' do
 end
 
 get '/files/:id/content' do
-  # TODO
+  # @todo
   # - ファイルが存在しない場合 404 を返す
 
   send_file File.join(settings.uploaded_path, params[:id]), disposition: :attachment
 end
 
 delete '/files/:id' do
-  # TODO
+  # @todo
   # - 削除に失敗した場合の例外処理
   # - ファイルが存在しない場合 404 を返すようにする
-  # - 「削除しました」や「削除に失敗しました」のようなメッセージを表示する
 
   File.delete(File.join(settings.uploaded_path, params[:id]))
+
+  flash[:notice] = "#{params[:id]} を削除しました。"
 
   redirect '/'
 end

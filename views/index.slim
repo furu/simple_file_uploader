@@ -1,5 +1,8 @@
 h1 Simple File Uploader
 
+- if flash[:notice]
+  p = flash[:notice]
+
 form action="/files" method="post" enctype="multipart/form-data"
   input type="file" name="uploaded_file"
   input type="submit"
